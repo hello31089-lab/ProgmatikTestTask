@@ -71,12 +71,11 @@ function solution(res, how) {
 			if(calculateExp(resArr)===res) allResults.push(`${resArr.join("")}=${res}`);
 		}
   }
-  return allResults;
+  return allResults.filter((t)=>t[0]!==`+`);
 }
 const start= performance.now();
-const result = solution(200,1);
+const result = solution(-987654321,1);
 const end = performance.now();
 console.log(result);
 
 console.log(`Время выполнения: ${end - start} мс`);
-
