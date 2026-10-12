@@ -30,38 +30,48 @@ const calculateExp = (strArr) => {
 };
 
 function solution(res, how) {
-  for (let i = 0; i < 3^9; i++) {
+ const allResults = [];
+  for (let i = 0; i < 3**10; i++) {
     const actionsNum = i.toString(3).padStart(10, "0");
     let index = 0;
     const resArr = [];
 	let lastNumber = 9;
-	[...actionsNum].forEach((t,i)=>{
-		if(lastNumber<-1) throw new Error("No solution")
+	let hasError = false;
+	
+	for (let j = 0; j < actionsNum.length; j++) {
+		const t = actionsNum[j];
+		if(lastNumber<-1) {
+			hasError = true;
+			break;
+		}
 		if(t==="0") {
-		i===0 ? resArr.push(lastNumber) :
+		j===0 ? resArr.push(lastNumber) :
 			resArr[index]=([resArr[index],--lastNumber].join(""))
 		}
 		else {
 			resArr.push(t === "1" ? "+" : "-")
-			i!==0 && --lastNumber;
+			j!==0 && --lastNumber;
 			resArr.push(lastNumber);
 			index=resArr.length-1;
 			}
-	});
+	}
+
+	if (hasError) continue;
 
 	
 		if(!how) {
 			try {
 				const expression = resArr.join("")
 				if(eval(expression)===res) 
-					return `${expression}=${res}`;
+					allResults.push(`${expression}=${res}`);
 			} catch (e){
 				console.log("eval error:", e)
 			;}
 		} else {
-			if(calculateExp(resArr)===res) return `${resArr.join("")}=${res}`;
+			if(calculateExp(resArr)===res) allResults.push(`${resArr.join("")}=${res}`);
 		}
-};
+  }
+  return allResults;
 }
 const start= performance.now();
 const result = solution(200,1);
